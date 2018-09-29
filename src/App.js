@@ -1,11 +1,27 @@
 import React, { Component } from 'react';
 import { Sigma, LoadJSON, RandomizeNodePositions, RelativeSize } from 'react-sigma';
 import ForceLink from 'react-sigma/lib/ForceLink';
+import Modal from '@material-ui/core/Modal';
+import Typography from '@material-ui/core/Typography';
 import './App.css';
 import DragNodes from './graph/DragNodes';
 import FormatGraph from './graph/FormatGraph';
 
 class App extends Component {
+
+  state = {
+    open: false,
+    sentence: ''
+  };
+
+  handleOpen = (event) => {
+    this.setState({ open: true, sentence: event.data.edge.sentence });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   render() {
     return (
       <div className="App">
@@ -16,7 +32,7 @@ class App extends Component {
           <Sigma 
             style={{flex: "1 0 auto", display: "flex"}}
             renderer="canvas"
-            onClickEdge={e => console.log(e)}
+            onClickEdge={this.handleOpen}
             settings={{
               clone: false,
               minNodeSize: 4,
@@ -33,6 +49,16 @@ class App extends Component {
               <FormatGraph />
             </LoadJSON>
           </Sigma>
+          <Modal
+            aria-describedby="simple-modal-description"
+            open={this.state.open}
+            onClose={this.handleClose}>
+            <div className="App-modal">
+              <Typography variant="subheading" id="simple-modal-description">
+                {this.state.sentence}
+              </Typography>
+            </div>
+          </Modal>
         </main>
       </div>
     );
