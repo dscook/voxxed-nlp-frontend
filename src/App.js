@@ -22,6 +22,10 @@ class App extends Component {
     this.setState({ open: false });
   };
 
+  createMarkup = () => {
+    return {__html: this.state.sentence};
+  }
+
   render() {
     return (
       <div className="App">
@@ -54,8 +58,9 @@ class App extends Component {
             open={this.state.open}
             onClose={this.handleClose}>
             <div className="App-modal">
-              <Typography variant="subheading" id="simple-modal-description">
-                {this.state.sentence}
+              <Typography variant="subheading" 
+                          id="simple-modal-description"
+                          dangerouslySetInnerHTML={this.createMarkup()}>
               </Typography>
             </div>
           </Modal>
